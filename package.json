@@ -1,0 +1,26 @@
+{
+  "name": "js-20200324",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:jest": "jest --findRelatedTests module-3/**/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dosandk/js-20200324.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dosandk/js-20200324/issues"
+  },
+  "homepage": "https://github.com/dosandk/js-20200324#readme",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.9.0",
+    "babel-jest": "^25.2.4",
+    "jest": "^25.2.4"
+  }
+}
