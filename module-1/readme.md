@@ -4,6 +4,7 @@
 
 4. [Объекты: основы](https://learn.javascript.ru/object-basics)  
     4.1 [Объекты](https://learn.javascript.ru/object) 
+    4.5 [Преобразование объектов в примитивы](https://learn.javascript.ru/object-toprimitive)
 
 5. [Типы данных](https://learn.javascript.ru/data-types)  
     5.1 [Методы у примитивов](https://learn.javascript.ru/primitives-methods)  

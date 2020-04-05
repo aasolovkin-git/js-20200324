@@ -23,11 +23,9 @@
     
 2. [Основы JavaScript](https://learn.javascript.ru/first-steps)  
     2.16 [Функции-стрелки, основы](https://learn.javascript.ru/arrow-functions-basics)   
-    
-6. [Продвинутая работа с функциями](https://learn.javascript.ru/advanced-functions)  
-    6.9 [Декораторы и переадресация вызова, сall/apply](https://learn.javascript.ru/call-apply-decorators)  
-    6.10 [Привязка контекста к функции](https://learn.javascript.ru/bind)  
-    6.11 [Повторяем стрелочные функции](https://learn.javascript.ru/arrow-functions)  
+ 
+3. [Качество кода](https://learn.javascript.ru/code-quality)  
+    3.5 [Автоматическое тестирование c использованием фреймворка Mocha](https://learn.javascript.ru/testing-mocha)    
 
 Задачи:
 
