@@ -16,7 +16,7 @@ export default class NotificationMessage {
         this.element.remove();
     }
 
-    get htmlTemplate() { 
+    get htmlTemplate() {  
         return `
             <div class="notification ${this.type}" style="--value:${this.duration}ms">
                 <div class="timer"></div>
