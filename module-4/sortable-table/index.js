@@ -98,7 +98,7 @@ export default class SortableTable {
 
   createDataItemsComparator(field, order) {
     function comparator(dataItem1, dataItem2) {
-      var result = 1;
+      var result = 0;
 
       var sortable = !!comparator.fieldHeaderInfo && comparator.fieldHeaderInfo.sortable;
 
