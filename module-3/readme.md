@@ -31,9 +31,20 @@
     
 3. [Качество кода](https://learn.javascript.ru/code-quality)  
     3.5 [Автоматическое тестирование c использованием фреймворка Mocha](https://learn.javascript.ru/testing-mocha) 
+  
+6. [Продвинутая работа с функциями](https://learn.javascript.ru/advanced-functions)  
+    6.8 [Планирование: setTimeout и setInterval](https://learn.javascript.ru/settimeout-setinterval) - до [setInterval](https://learn.javascript.ru/settimeout-setinterval#setinterval) включительно
     
 ## Задачи: 
 
 * ["Notification" компонент](https://notification-js-20200203.glitch.me)
-* "ColumnChart" компонент
 * Из учебника: [Прототип после создания](https://learn.javascript.ru/task/prototype-after-new)
+
+## Дополнительные материалы:
+
+Для запуска компонент в браузере, пожалуйста воспользуйтесь одним из предложенных ниже способов:
+
+* Плагин для "Google Chrome" [Web Server for Chrome](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?utm_source=chrome-ntp-launcher)
+* Плагин ["Live Server"](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) для редактора [Visual Studio Code](https://code.visualstudio.com/)
+* [Встроенный сервер](https://www.jetbrains.com/phpstorm/) в [WebStorm](https://www.jetbrains.com/webstorm/) / [PhpStorm](https://www.jetbrains.com/phpstorm/)  
+* npm пакет [static-server](https://www.npmjs.com/package/static-server)
