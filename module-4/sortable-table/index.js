@@ -79,21 +79,21 @@ export default class SortableTable {
     `;
   }
 
-  htmlToElement(html) {
-    const element = document.createElement('div');
-    element.innerHTML = html;
-    return element.firstElementChild;
-  }
-
   render() {
-    this.element = this.htmlToElement(this.tableContainerTemplate);
+    this.element = htmlToElement(this.tableContainerTemplate);
 
     var sortableTableElement = this.element.querySelector(".products-list__container .sortable-table");
     
-    sortableTableElement.append(this.subElements.header = this.htmlToElement(this.tableHeaderTempate));
-    sortableTableElement.append(this.subElements.body = this.htmlToElement(this.getTableBodyTempate(this.data)));
-    sortableTableElement.append(this.subElements.loading = this.htmlToElement(this.loadingTemplate));
-    sortableTableElement.append(this.subElements.emptyPlaceholder = this.htmlToElement(this.emptyPlaceholderTemplate));
+    sortableTableElement.append(this.subElements.header = htmlToElement(this.tableHeaderTempate));
+    sortableTableElement.append(this.subElements.body = htmlToElement(this.getTableBodyTempate(this.data)));
+    sortableTableElement.append(this.subElements.loading = htmlToElement(this.loadingTemplate));
+    sortableTableElement.append(this.subElements.emptyPlaceholder = htmlToElement(this.emptyPlaceholderTemplate));
+
+    function htmlToElement(html) {
+      const element = document.createElement('div');
+      element.innerHTML = html;
+      return element.firstElementChild;
+    }
   }
 
   createDataItemsComparator(field, order) {
