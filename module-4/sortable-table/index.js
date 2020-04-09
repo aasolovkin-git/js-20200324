@@ -135,31 +135,26 @@ export default class SortableTable {
 
   setHeaderSortArrow(field, order) {
     this.subElements.header
-      .querySelectorAll("span.sortable-table__sort-arrow")
-      .forEach(item => item.remove());
-
-    this.subElements.header
       .querySelectorAll(".sortable-table__cell")
       .forEach(item => {
         let cellId = item.dataset.name;
         let cellHeaderConfig = this.headersConfig.find(item => item.id === cellId);
         let cellSortable = !!cellHeaderConfig && cellHeaderConfig.sortable;
-
+        
         if (cellSortable) {
-          item.setAttribute("data-sortable", (cellId === field) ? "true" : "");
+          let sortArrowElement = item.querySelector("span.sortable-table__sort-arrow");
+
+          item.setAttribute("data-sortable", (cellId === field) || "");
 
           if (cellId === field) {
             item.setAttribute("data-order", order);
+            if (!sortArrowElement) item.insertAdjacentHTML("beforeEnd", this.headerCellSortArrowTemplate);
           } else {
             item.removeAttribute("data-order");
+            if (sortArrowElement) sortArrowElement.remove();
           }
         }
       });
-
-    let sortedHeaderCell = this.subElements.header.querySelector(".sortable-table__cell[data-name='"+field+"']");
-    if (sortedHeaderCell) {
-      sortedHeaderCell.insertAdjacentHTML("beforeEnd", this.headerCellSortArrowTemplate);
-    }
   }
 
   sort (field, order) {
