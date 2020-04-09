@@ -82,7 +82,7 @@ export default class SortableTable {
   render() {
     this.element = htmlToElement(this.tableContainerTemplate);
 
-    var sortableTableElement = this.element.querySelector(".products-list__container .sortable-table");
+    let sortableTableElement = this.element.querySelector(".products-list__container .sortable-table");
     
     sortableTableElement.append(this.subElements.header = htmlToElement(this.tableHeaderTempate));
     sortableTableElement.append(this.subElements.body = htmlToElement(this.getTableBodyTempate(this.data)));
@@ -98,15 +98,19 @@ export default class SortableTable {
 
   createDataItemsComparator(field, order) {
     function comparator(dataItem1, dataItem2) {
-      var result = 0;
+      let result = 0;
 
-      var sortable = !!comparator.fieldHeaderInfo && comparator.fieldHeaderInfo.sortable;
-
+      let fieldHeaderInfo = comparator.fieldHeaderInfo;
+      
+      let sortable = !!fieldHeaderInfo && fieldHeaderInfo.sortable;
+      
       if (sortable) {
-        var dataItem1Value = dataItem1 && dataItem1[comparator.field];
-        var dataItem2Value = dataItem2 && dataItem2[comparator.field];
+        let dataItem1Value = dataItem1 && dataItem1[comparator.field];
+        let dataItem2Value = dataItem2 && dataItem2[comparator.field];
 
-        switch (comparator.fieldHeaderInfo.sortType) {
+        let sortType = fieldHeaderInfo && fieldHeaderInfo.sortType;
+
+        switch (sortType) {
           case 'string':
             result = (dataItem1Value || "").localeCompare((dataItem2Value || ""), 'default', {caseFirst: 'upper'});
             break; 
