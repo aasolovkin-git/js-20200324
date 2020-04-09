@@ -104,7 +104,7 @@ export default class SortableTable {
 
         switch (comparator.fieldHeaderInfo.sortType) {
           case 'string':
-            result = (dataItem1Value || "").localeCompare(dataItem2Value || "");
+            result = (dataItem1Value || "").localeCompare((dataItem2Value || ""), 'default', {caseFirst: 'upper'}))
             break;
 
           case 'number':
