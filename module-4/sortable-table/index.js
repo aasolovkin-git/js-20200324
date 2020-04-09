@@ -51,6 +51,14 @@ export default class SortableTable {
     `;
   }
 
+  getHeaderCellSortArrowTemplate(sortOrder) {
+    return `
+    <span class="sortable-table__sort-arrow">
+      <span class="sortable-table__sort-arrow_${sortOrder}"></span>
+    </span>
+    `;
+  }
+
   getTableRecordTempate(dataItem) {
     return `
     <a href="/products/${dataItem}" class="sortable-table__row">
@@ -121,11 +129,24 @@ export default class SortableTable {
     return comparator;
   }
 
+  setHeaderSortArrow(field, order) {
+    this.subElements.header
+      .querySelectorAll("span.sortable-table__sort-arrow")
+      .forEach(item => item.remove());
+
+    let sortedHeaderCell = this.subElements.header.querySelector(".sortable-table__cell[data-name='"+field+"']");
+    if (sortedHeaderCell) {
+      sortedHeaderCell.insertAdjacentHTML("beforeEnd", this.getHeaderCellSortArrowTemplate(order));
+    }
+  }
+
   sort (field, order) {
     this.subElements.body.innerHTML = this.data
       .sort(this.createDataItemsComparator(field, order))
       .map(item => this.getTableRecordTempate(item))
       .join("");
+
+    this.setHeaderSortArrow(field, order);
   }
 
   remove() {
