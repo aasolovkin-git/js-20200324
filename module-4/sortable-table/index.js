@@ -37,7 +37,7 @@ export default class SortableTable {
     return `<div data-elem="loading" class="loading-line sortable-table__loading-line"></div>`
   };
 
-  getTableHeaderTempate() {
+  get tableHeaderTempate() {
     return `
     <div data-elem="header" class="sortable-table__header sortable-table__row">
       ${ 
@@ -78,18 +78,14 @@ export default class SortableTable {
   }
 
   render() {
-    this.subElements.header = this.htmlToElement(this.getTableHeaderTempate());
-    this.subElements.body = this.htmlToElement(this.getTableBodyTempate(this.data));
-    this.subElements.loading = this.htmlToElement(this.loadingTemplate);
-    this.subElements.emptyPlaceholder = this.htmlToElement(this.emptyPlaceholderTemplate);
-
     this.element = this.htmlToElement(this.tableContainerTemplate);
 
     var sortableTableElement = this.element.querySelector(".products-list__container .sortable-table");
-    sortableTableElement.append(this.subElements.header);
-    sortableTableElement.append(this.subElements.body);
-    sortableTableElement.append(this.subElements.loading);
-    sortableTableElement.append(this.subElements.emptyPlaceholder);
+    
+    sortableTableElement.append(this.subElements.header = this.htmlToElement(this.tableHeaderTempate));
+    sortableTableElement.append(this.subElements.body = this.htmlToElement(this.getTableBodyTempate(this.data)));
+    sortableTableElement.append(this.subElements.loading = this.htmlToElement(this.loadingTemplate));
+    sortableTableElement.append(this.subElements.emptyPlaceholder = this.htmlToElement(this.emptyPlaceholderTemplate));
   }
 
   createDataItemsComparator(field, order) {
@@ -104,7 +100,7 @@ export default class SortableTable {
 
         switch (comparator.fieldHeaderInfo.sortType) {
           case 'string':
-            result = (dataItem1Value || "").localeCompare((dataItem2Value || ""), 'default', {caseFirst: 'upper'}))
+            result = (dataItem1Value || "").localeCompare((dataItem2Value || ""), 'default', {caseFirst: 'upper'});
             break; 
 
           case 'number':
