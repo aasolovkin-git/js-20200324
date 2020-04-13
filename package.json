@@ -4,17 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-<<<<<<< HEAD
-    "test": "jest",
-    "test:all": "NODE_ICU_DATA=node_modules/full-icu jest",
-    "test:specific": "NODE_ICU_DATA=node_modules/full-icu jest --findRelatedTests",
-    "serve": "static-server",
-    "start": "static-server --port 8080 ./module-4/sortable-table"
-=======
     "test:all": "cross-env NODE_ICU_DATA=node_modules/full-icu jest",
     "test:specific": "cross-env NODE_ICU_DATA=node_modules/full-icu jest --findRelatedTests",
     "start": "static-server"
->>>>>>> c8a27383cbd9b559000df2fff86ca3c1c5d56be5
   },
   "repository": {
     "type": "git",

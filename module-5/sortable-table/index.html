@@ -46,7 +46,8 @@
       id: 'sales',
       title: 'Sales',
       sortable: true,
-      sortType: 'number'
+      sortType: 'number',
+      sortingValuesCompare: (value1, value2) => parseFloat(value1) - parseFloat(value2)
     },
   ];
 
