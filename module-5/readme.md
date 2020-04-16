@@ -2,22 +2,22 @@
 
 ## Материалы из учебника:
 
-2. [Введение в события](https://learn.javascript.ru/events) 
-    2.1 [Введение в браузерные события](https://learn.javascript.ru/introduction-browser-events) 
-    2.2 [Всплытие и погружение](https://learn.javascript.ru/bubbling-and-capturing) 
-    2.3 [Делегирование событий](https://learn.javascript.ru/event-delegation) 
+2. [Введение в события](https://learn.javascript.ru/events)  
+    2.1 [Введение в браузерные события](https://learn.javascript.ru/introduction-browser-events)  
+    2.2 [Всплытие и погружение](https://learn.javascript.ru/bubbling-and-capturing)  
+    2.3 [Делегирование событий](https://learn.javascript.ru/event-delegation)  
     2.4 [Действия браузера по умолчанию](https://learn.javascript.ru/default-browser-action)  
-    2.5 [Генерация пользовательских событий](https://learn.javascript.ru/dispatch-events)
+    2.5 [Генерация пользовательских событий](https://learn.javascript.ru/dispatch-events)  
         
 3. [Интерфейсные события](https://learn.javascript.ru/event-details)  
-    3.1 [Основы событий мыши](https://learn.javascript.ru/mouse-events-basics)   
+    3.1 [Основы событий мыши](https://learn.javascript.ru/mouse-events-basics)  
     3.2 [Движение мыши: mouseover/out, mouseenter/leave](https://learn.javascript.ru/mousemove-mouseover-mouseout-mouseenter-mouseleave)  
     3.3 [Drag'n'Drop с событиями мыши](https://learn.javascript.ru/mouse-drag-and-drop)  
     3.4 [Клавиатура: keydown и keyup](https://learn.javascript.ru/keyboard-events)  
     3.5 [Прокрутка](https://learn.javascript.ru/onscroll)  
 
-5. [Типы данных](https://learn.javascript.ru/data-types)
-    5.11 [Дата и время](https://learn.javascript.ru/date)
+5. [Типы данных](https://learn.javascript.ru/data-types)  
+    5.11 [Дата и время](https://learn.javascript.ru/date)  
 
 ## Задачи: 
 
@@ -37,7 +37,7 @@
 
 Добавить к компоненту тесты.
 
-* ["Tooltip" (behavior) компонент](https://glitch.com/edit/#!/tooltip-learn-javascrip)
+* ["Tooltip" (behavior) компонент](https://glitch.com/edit/#!/tooltip-learn-javascript)
 
 Пояснение к заданию:
 
