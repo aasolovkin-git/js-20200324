@@ -4,6 +4,7 @@ const BACKEND_URL = 'https://course-js.javascript.ru';
 
 export default class SortableTable {
   element;
+  sortArrowElement;
   subElements = {};
   headersConfig = [];
   data = [];
@@ -75,12 +76,8 @@ export default class SortableTable {
     `;
   }
 
-  getTableBodyTempate(data) {
-    return `
-    <div data-elem="body" class="sortable-table__body">
-      ${ data.map(item => this.getTableRecordTempate(item)).join("") }
-    </div>
-    `;
+  get tableBodyTempate() {
+    return `<div data-elem="body" class="sortable-table__body"></div>`;
   }
 
   get tableContainerTemplate() {
@@ -88,15 +85,13 @@ export default class SortableTable {
     <div data-elem="productsContainer" class="products-list__container">
       <div class="sortable-table">
       ${this.tableHeaderTempate}
-      ${this.getTableBodyTempate(this.data)}
+      ${this.tableBodyTempate}
       ${this.loadingTemplate}
       ${this.emptyPlaceholderTemplate}
       </div>
     </div>
     `;
   }
-
-//остановился тут
 
   async render() {
     const {id, order} = this.sorted;
@@ -106,17 +101,48 @@ export default class SortableTable {
     const element = wrapper.firstElementChild;
 
     this.element = element;
-    this.element.querySelectorAll(".sortable-table [data-elem]").forEach(item => this.subElements[item.dataset.elem] = item);
+    this.element
+      .querySelectorAll(".sortable-table [data-elem]")
+      .forEach(item => this.subElements[item.dataset.elem] = item);
 
-    const data = await this.loadData(id, order);
+    const sortArrowWrapper = document.createElement('div');
+    sortArrowWrapper.innerHTML = this.headerCellSortArrowTemplate;
+    this.sortArrowElement = sortArrowWrapper.firstElementChild;
 
-    this.renderRows(data);
+    await this.loadTableRows(id, order);
+
+    this.setHeaderSortArrow(id, order);
 
     this.initEventListeners();
+  }
 
+  async loadData (id, order) {
+    return fetchJson(this.url + `?_start=0&_end=${this.pageSize}&_sort=${id}&_order=${order}`);
+  }
 
+  async loadTableRows (id, order) {
+    this.subElements.body.style.display = "none";
+    this.subElements.emptyPlaceholder.style.display = "none";
+    this.subElements.loading.style.display = "block";
 
+    try {
+      this.data = await this.loadData(id, order);
+      this.renderRows(this.data);
+    } finally {
+      this.subElements.loading.style.display = "none";
 
+      if (this.subElements.body.childElementCount) {
+        this.subElements.body.style.display = "block";
+      } else {
+        this.subElements.emptyPlaceholder.style.display = "block";
+      }
+    }
+  }
+
+  renderRows(data) {
+    this.subElements.body.innerHTML = data
+      .map(item => this.getTableRecordTempate(item))
+      .join("");
   }
 
   createDataItemsComparator(field, order) {
@@ -134,7 +160,7 @@ export default class SortableTable {
         } else {
           switch (sortType) {
             case 'string':
-              result = (value1 || "").localeCompare((value2 || ""), 'default', {caseFirst: 'upper'});
+              result = (value1 || "").localeCompare(value2, 'default', {caseFirst: 'upper'});
               break; 
 
             case 'number':
@@ -156,26 +182,21 @@ export default class SortableTable {
 
   setHeaderSortArrow(field, order) {
     this.subElements.header
-      .querySelectorAll(".sortable-table__cell span.sortable-table__sort-arrow")
-      .forEach(item => item.remove());
-
-    this.subElements.header
       .querySelectorAll(".sortable-table__cell")
       .forEach(item => {
-        if (item.dataset.name === field) {
-          item.setAttribute("data-sortable", "true");
-          item.setAttribute("data-order", order);
-          item.insertAdjacentHTML("beforeEnd", this.headerCellSortArrowTemplate);
-        } else {
-          item.setAttribute("data-sortable", "");
-          item.removeAttribute("data-order");
-        }
+        item.removeAttribute("data-order");
       });
+
+    let fieldHeaderElement = this.subElements.header
+      .querySelector(".sortable-table__cell[data-name='"+field+"']");
+    
+    if (fieldHeaderElement) {
+      fieldHeaderElement.append(this.sortArrowElement);
+      fieldHeaderElement.setAttribute("data-order", order);
+    }
   }
 
-  onSortClick = (event) => {
-    //предусмотреть серверную сортировку если this.sorted.isSortLocally = false
-
+  onSortClick = async (event) => {
     let headerCell = event.target.closest(".sortable-table__cell");
 
     if (headerCell) {
@@ -184,11 +205,12 @@ export default class SortableTable {
       let { sortable } = this.headersConfig.find(item => item.id === field);
       
       if (!!sortable) {
-        this.subElements.body.innerHTML = this.data
-          .sort(this.createDataItemsComparator(field, newOrder))
-          .map(item => this.getTableRecordTempate(item))
-          .join("");
-    
+        if (this.isSortLocally) {
+          this.renderRows(this.data.sort(this.createDataItemsComparator(field, newOrder)));
+        } else {
+          await this.loadTableRows(field, newOrder);
+        }
+
         this.setHeaderSortArrow(field, newOrder); 
       } 
     }
