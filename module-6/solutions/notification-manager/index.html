@@ -1,0 +1,47 @@
+<!doctype html>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" type="text/css" href="../notification/style.css">
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<div>
+  <button id="btn1">Show simple message!</button>
+</div>
+<div>
+  <button id="btn2">Show message with manager!</button>
+</div>
+
+<script type="module">
+  import { NotificationMessage, SuccessNotificationMessage } from '../notification';
+  import NotificationManager from './index.js';
+
+  const notificationManager = new NotificationManager({stackLimit: 5});
+
+  let counter = 0;
+
+  btn2.addEventListener('click', () => {
+    notificationManager.showMessage(counter + ' ' + generateRandomWord(), {
+      duration: generateRandomNumber(1000, 4000),
+      type: generateRandomWord(['success', 'error', 'warning'])
+    });
+    ++counter;
+  });
+
+  new SuccessNotificationMessage('Hello world', {duration: 10000000}).show();
+
+  btn1.addEventListener('click', () => {
+    new NotificationMessage(generateRandomWord(), {
+      duration: generateRandomNumber(1000, 4000),
+    }).show();
+  });
+
+  function generateRandomNumber (start, end) {
+    return start + Math.random() * end;
+  }
+
+  function generateRandomWord (data) {
+    const words = data || ['apple', 'banana', 'orange', 'tomato', 'grape'];
+
+    return words[Math.round(generateRandomNumber(0, 4))];
+  }
+</script>
