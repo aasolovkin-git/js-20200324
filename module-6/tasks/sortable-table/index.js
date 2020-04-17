@@ -12,7 +12,6 @@ export default class SortableTable {
 
   constructor(headersConfig, {
     url = '',
-    data = [],
     sorted = {
       id: headersConfig.find(item => item.sortable).id,
       order: 'asc'
