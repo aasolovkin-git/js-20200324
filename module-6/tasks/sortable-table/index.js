@@ -96,24 +96,24 @@ export default class SortableTable {
   async render() {
     const {id, order} = this.sorted;
 
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = this.tableContainerTemplate;
-    const element = wrapper.firstElementChild;
+    this.sortArrowElement = htmlToElement(this.headerCellSortArrowTemplate);
+    this.element = htmlToElement(this.tableContainerTemplate);
 
-    this.element = element;
     this.element
       .querySelectorAll(".sortable-table [data-elem]")
       .forEach(item => this.subElements[item.dataset.elem] = item);
-
-    const sortArrowWrapper = document.createElement('div');
-    sortArrowWrapper.innerHTML = this.headerCellSortArrowTemplate;
-    this.sortArrowElement = sortArrowWrapper.firstElementChild;
 
     await this.loadTableRows(id, order);
 
     this.setHeaderSortArrow(id, order);
 
     this.initEventListeners();
+
+    function htmlToElement(html) {
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = html;
+      return wrapper.firstElementChild;
+    }
   }
 
   async loadData (id, order) {
@@ -121,20 +121,22 @@ export default class SortableTable {
   }
 
   async loadTableRows (id, order) {
-    this.subElements.body.style.display = "none";
-    this.subElements.emptyPlaceholder.style.display = "none";
-    this.subElements.loading.style.display = "block";
+    let { body, emptyPlaceholder, loading } = this.subElements
+    
+    body.style.display = "none";
+    emptyPlaceholder.style.display = "none";
+    loading.style.display = "block";
 
     try {
       this.data = await this.loadData(id, order);
       this.renderRows(this.data);
     } finally {
-      this.subElements.loading.style.display = "none";
+      loading.style.display = "none";
 
-      if (this.subElements.body.childElementCount) {
-        this.subElements.body.style.display = "block";
+      if (this.data.length) {
+        body.style.display = "block";
       } else {
-        this.subElements.emptyPlaceholder.style.display = "block";
+        emptyPlaceholder.style.display = "block";
       }
     }
   }
@@ -151,7 +153,7 @@ export default class SortableTable {
 
       let  { sortable, sortType, sortingValuesCompare } = comparator.fieldHeaderInfo;
       
-      if (!!sortable) {
+      if (Boolean(sortable)) {
         let value1 = dataItem1[comparator.field];
         let value2 = dataItem2[comparator.field];
 
@@ -204,7 +206,7 @@ export default class SortableTable {
       let newOrder = (order === "asc" ? "desc" : "asc");
       let { sortable } = this.headersConfig.find(item => item.id === field);
       
-      if (!!sortable) {
+      if (Boolean(sortable)) {
         if (this.isSortLocally) {
           this.renderRows(this.data.sort(this.createDataItemsComparator(field, newOrder)));
         } else {
