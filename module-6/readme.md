@@ -3,7 +3,7 @@
 ## Материалы из учебника:
 
 13. [Модули](https://learn.javascript.ru/modules)  
-    13.3 [Динамические импорты](https://learn.javascript.ru/modules-dynamic-imports)
+    13.3 [Динамические импорты](https://learn.javascript.ru/modules-dynamic-imports)  
 
 11. [Промисы, async/await](https://learn.javascript.ru/async)  
     11.1 [Введение: колбэки](https://learn.javascript.ru/callbacks)  
@@ -13,18 +13,18 @@
     11.5 [Promise API](https://learn.javascript.ru/promise-api)  
     11.6 [Промисификация](https://learn.javascript.ru/promisify)  
     11.7 [Микрозадачи](https://learn.javascript.ru/microtask-queue)  
-    11.8 [Async/await](https://learn.javascript.ru/async-await)   
+    11.8 [Async/await](https://learn.javascript.ru/async-await)  
 
 3. [Сетевые запросы](https://learn.javascript.ru/network)  
     3.1 [Fetch](https://learn.javascript.ru/fetch)  
     3.2 [FormData](https://learn.javascript.ru/formdata)  
     3.3 [Fetch: ход загрузки](https://learn.javascript.ru/fetch-progress)  
-    3.4 [Fetch: прерывание запроса](https://learn.javascript.ru/fetch-abort)   
-    3.5 [Fetch: запросы на другие сайты](https://learn.javascript.ru/fetch-crossorigin)   
+    3.4 [Fetch: прерывание запроса](https://learn.javascript.ru/fetch-abort)  
+    3.5 [Fetch: запросы на другие сайты](https://learn.javascript.ru/fetch-crossorigin)  
 
-6. [Разное](https://learn.javascript.ru/ui-misc)
+6. [Разное](https://learn.javascript.ru/ui-misc)  
     6.3 [Событийный цикл: микрозадачи и макрозадачи](https://learn.javascript.ru/event-loop)  
-    
+        
 ## Задачи: 
 
 * [SortableTable компонент](https://glitch.com/edit/#!/sortable-dynamic-table) с динамической подгрузкой данных
