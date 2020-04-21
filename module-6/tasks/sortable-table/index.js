@@ -116,7 +116,12 @@ export default class SortableTable {
   }
 
   async loadData (id, order) {
-    return fetchJson(this.url + `?_start=0&_end=${this.pageSize}&_sort=${id}&_order=${order}`);
+    this.url.searchParams.set('_start', 0);
+    this.url.searchParams.set('_end', this.pageSize);
+    this.url.searchParams.set('_sort', id);
+    this.url.searchParams.set('_order', order);
+    
+    return fetchJson(this.url);
   }
 
   async loadTableRows (id, order) {
