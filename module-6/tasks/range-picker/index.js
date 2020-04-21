@@ -48,8 +48,6 @@ export default class RangePicker {
     let getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
 
     let monthAlias = getMonthAlias(month);
-    let firstDayOfMonthWeekDay = getDayOfWeek(year, month);
-    let daysInMonth = getDaysInMonth(year, month);
 
     return `
     <div class="rangepicker__calendar">
@@ -67,10 +65,10 @@ export default class RangePicker {
       </div>
       <div class="rangepicker__date-grid">
         ${
-          [ ...new Array(daysInMonth)]
+          [ ...new Array(getDaysInMonth(year, month))]
           .map((item, itemIndex) => {
             let dayDate = new Date(year, month, itemIndex + 1);
-            return `<button type="button" ${ itemIndex === 0 ? 'style="--start-from: '+firstDayOfMonthWeekDay+'"': ''}  class="rangepicker__cell" data-value="${ dayDate.toISOString() }">${itemIndex + 1}</button>`;
+            return `<button type="button" ${ itemIndex === 0 ? 'style="--start-from: '+getDayOfWeek(year, month)+'"': ''}  class="rangepicker__cell" data-value="${ dayDate.toISOString() }">${itemIndex + 1}</button>`;
           })
           .join("")
         }
@@ -119,15 +117,12 @@ export default class RangePicker {
 
     let dateToString = (date) => {
       return date
-        ? `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`
+        ? date.toLocaleString('ru', {dateStyle: 'short'})
         : ""; 
     };
 
-    let fromElement = this.subElements.input.querySelector("[data-elem='from']");
-    fromElement.textContent = dateToString(from);
-
-    let toElement = this.subElements.input.querySelector("[data-elem='to']");
-    toElement.textContent = dateToString(to);
+    this.subElements.from.textContent = dateToString(from);
+    this.subElements.to.textContent = dateToString(to);
   }
 
   render() {
@@ -145,13 +140,10 @@ export default class RangePicker {
   }
 
   getSubElements (element) {
-    const subElements = {};
-
-    for (const subElement of element.querySelectorAll('[data-elem]')) {
-      subElements[subElement.dataset.elem] = subElement;
-    }
-
-    return subElements;
+    return [ ...element.querySelectorAll('[data-elem]') ].reduce((subElements, item) => { 
+      subElements[item.dataset.elem] = item;
+      return subElements;
+    }, {});
   }
 
   getPrevMonth( { year, month } = {} ) {
@@ -191,6 +183,12 @@ export default class RangePicker {
     return this.rangepickerElement.classList.contains("rangepicker_open");
   }
 
+  OnClickOutOfRangepicker = (event) => {
+    if (!event.target.closest(".rangepicker")) {
+      this.closeRangepicker();
+    }
+  }
+
   openRangepicker() {
     this.selectingDateRange = false;
     this.newDateRangeFrom = new Date(this.selected.from);
@@ -200,10 +198,13 @@ export default class RangePicker {
     this.selectCalendarCells(this.selected);
 
     this.rangepickerElement.classList.add("rangepicker_open");
+    
+    document.addEventListener("click", this.OnClickOutOfRangepicker);
   }
 
   closeRangepicker() {
     this.rangepickerElement.classList.remove("rangepicker_open");
+    document.removeEventListener("click", this.OnClickOutOfRangepicker);
   }
 
   OnInputClick = (event) => {
