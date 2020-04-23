@@ -1,0 +1,53 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>ProductForm</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+  #root {
+    width: 800px;
+    margin: 40px auto;
+  }
+</style>
+
+<body>
+
+<div id="root"></div>
+
+<script type="module">
+  import ProductFormComponent from './index.js';
+  import categories from "./categories.js";
+
+  const productData = {
+    title: 'foo',
+    description: 'bar',
+    subcategory: '',
+    price: '1',
+    discount: '1',
+    quantity: '1',
+    status: '',
+    images: [
+      {
+        url: 'https://i.imgur.com/7SPzszI.jpg',
+        name: 'foo.jpg'
+      },
+      {
+        url: 'https://i.imgur.com/7SPzszI.jpg',
+        name: 'bar.jpg'
+      }
+    ],
+    categories
+  };
+
+  const productForm = new ProductFormComponent(productData);
+
+  root.append(productForm.element);
+
+  productForm.element.addEventListener('product-saved', event => {
+    console.error('detail', event.detail);
+  })
+</script>
+</body>
+
+

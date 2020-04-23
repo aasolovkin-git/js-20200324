@@ -71,7 +71,7 @@ describe("SortableTable", () => {
   });
 
   it("should call \"loadData\" method", () => {
-    fetchMock.mockResponseOnce();
+    fetchMock.mockResponseOnce()
 
     expect(fetchMock.mock.calls.length).toEqual(1);
   });
