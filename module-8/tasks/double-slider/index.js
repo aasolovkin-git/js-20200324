@@ -63,10 +63,10 @@ export default class DoubleSlider {
       let dragedSlider = event.target;
       let isLeftSliderDraged = dragedSlider.classList.contains("range-slider__thumb-left");
 
+      let shiftX = event.clientX - dragedSlider.getBoundingClientRect().left;
+
       let { left: sliderBarLeft , right: sliderBarRight } = this.subElements.inner.getBoundingClientRect();
       let sliderBarWidth = sliderBarRight - sliderBarLeft;
-
-      let shiftX = event.clientX - dragedSlider.getBoundingClientRect().left;
 
       let availableDragedSliderRange = isLeftSliderDraged
         ? {
@@ -91,32 +91,53 @@ export default class DoubleSlider {
           newLeft = availableDragedSliderRange.max;
         }
     
-        dragedSlider.style.left = newLeft + 'px';         
+        let calcPositionInPercent = value => {
+          return (value - this.min)/(this.max - this.min)*100;
+        }
+
+        let newDragedSliderPosition = (sliderBarWidth ? newLeft/sliderBarWidth*100 : 0);
+        let newDragedSliderValue = Math.round(newLeft / sliderBarWidth * (this.max - this.min)) + this.min;
+
+        dragedSlider.style.left = newDragedSliderPosition + '%';         
 
         let progressElement = this.subElements.progress;
 
-        let newDragedSliderValue = Math.round(newLeft / sliderBarWidth * (this.max - this.min)) + this.min;
-
         if (isLeftSliderDraged) {
-          progressElement.style.left = newLeft + 'px';
+          progressElement.style.left = newDragedSliderPosition + '%';
           this.selected.from = newDragedSliderValue;
         } else {
-          progressElement.style.right = sliderBarWidth - newLeft + 'px';
+          progressElement.style.right = 100 - newDragedSliderPosition + '%';
           this.selected.to = newDragedSliderValue;
         }
 
         this.setLabelValues(this.selected);
+
+        this.dispatchRangeMoveEvent();
       };
       
       let OnMouseup = (event) => {
         document.removeEventListener('pointermove', onMouseMove);
         document.removeEventListener('pointerup', OnMouseup);
+
+        this.dispatchRangeSelectEvent();
       }
 
       document.addEventListener('pointermove', onMouseMove);
       document.addEventListener('pointerup', OnMouseup);
     }
   }
+
+  dispatchRangeMoveEvent () {
+    this.element.dispatchEvent(new CustomEvent("range-move", {
+      detail: this.selected
+    }));
+  }  
+
+  dispatchRangeSelectEvent () {
+    this.element.dispatchEvent(new CustomEvent("range-select", {
+      detail: this.selected
+    }));
+  }  
 
   setLabelValues( { from, to } = this.selected ) {
     this.subElements.from.textContent = this.formatValue(from);
