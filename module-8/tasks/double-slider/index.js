@@ -91,10 +91,6 @@ export default class DoubleSlider {
           newLeft = availableDragedSliderRange.max;
         }
     
-        let calcPositionInPercent = value => {
-          return (value - this.min)/(this.max - this.min)*100;
-        }
-
         let newDragedSliderPosition = sliderBarWidth 
           ? newLeft/sliderBarWidth*100 
           : isLeftSliderDraged
