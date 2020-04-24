@@ -91,27 +91,23 @@ export default class DoubleSlider {
           newLeft = availableDragedSliderRange.max;
         }
     
-        let newDragedSliderPosition = sliderBarWidth 
-          ? newLeft/sliderBarWidth*100 
+        let newDragedSliderPositionInPercent = sliderBarWidth 
+          ? newLeft/sliderBarWidth
           : isLeftSliderDraged
             ? 0
-            : 100;
+            : 1;
 
-        let newDragedSliderValue = sliderBarWidth
-          ? Math.round(newLeft / sliderBarWidth * (this.max - this.min)) + this.min
-          : isLeftSliderDraged
-            ? this.min
-            : this.max;
+        dragedSlider.style.left = newDragedSliderPositionInPercent * 100 + '%';         
 
-        dragedSlider.style.left = newDragedSliderPosition + '%';         
+        let newDragedSliderValue = Math.round(newDragedSliderPositionInPercent * (this.max - this.min)) + this.min;
 
         let progressElement = this.subElements.progress;
 
         if (isLeftSliderDraged) {
-          progressElement.style.left = newDragedSliderPosition + '%';
+          progressElement.style.left = newDragedSliderPositionInPercent * 100 + '%';
           this.selected.from = newDragedSliderValue;
         } else {
-          progressElement.style.right = 100 - newDragedSliderPosition + '%';
+          progressElement.style.right = 100 - newDragedSliderPositionInPercent * 100 + '%';
           this.selected.to = newDragedSliderValue;
         }
 
