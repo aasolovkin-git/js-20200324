@@ -93,9 +93,6 @@ describe("DoubleSlider", () => {
     const down = new MouseEvent('pointerdown', {
       bubbles: true
     });
-    const up = new MouseEvent('pointerup', {
-      bubbles: true
-    });
     const moveRight = new MouseEvent('pointermove', {
       clientX: 1000,
       bubbles: true
@@ -106,13 +103,10 @@ describe("DoubleSlider", () => {
     });
     leftSlider.dispatchEvent(down);
     leftSlider.dispatchEvent(moveLeft);
-    leftSlider.dispatchEvent(up);
     rightSlider.dispatchEvent(down);
     rightSlider.dispatchEvent(moveRight);
-    rightSlider.dispatchEvent(up);
-
-    expect(leftBoundary).toHaveTextContent("$"+doubleSlider.min);
-    expect(rightBoundary).toHaveTextContent("$"+doubleSlider.max);
+    expect(leftBoundary).toHaveTextContent(doubleSlider.min);
+    expect(rightBoundary).toHaveTextContent(doubleSlider.max);
   });
   it('should have ability to select single value (when min and max range equal)', () => {
     const leftSlider = doubleSlider.element.querySelector('.range-slider__thumb-left');

@@ -1,7 +1,9 @@
 export default class DoubleSlider {
   element;
   subElements = {};
-
+  dragedThumb;
+  dragedThumbShiftX = 0;
+  
   constructor ({
      min = 100,
      max = 200,
@@ -60,73 +62,76 @@ export default class DoubleSlider {
   OnMouseDown = (event) => {
     if (event.target.classList.contains("range-slider__thumb-left") ||
         event.target.classList.contains("range-slider__thumb-right")) {
-      let dragedSlider = event.target;
-      let isLeftSliderDraged = dragedSlider.classList.contains("range-slider__thumb-left");
 
-      let shiftX = event.clientX - dragedSlider.getBoundingClientRect().left;
+      this.dragedThumb = event.target;
+      this.dragedThumbShiftX = event.clientX - this.dragedThumb.getBoundingClientRect().left;
 
+      document.addEventListener('pointermove', this.onMouseMove);
+      document.addEventListener('pointerup', this.OnMouseup);
+    }
+  }
+
+  OnMouseup = (event) => {
+    if (this.dragedThumb) {
+      document.removeEventListener('pointermove', this.onMouseMove);
+      document.removeEventListener('pointerup', this.OnMouseup);
+
+      this.dispatchRangeSelectEvent();
+
+      this.dragedThumb = null;
+    }
+  }
+
+  onMouseMove = (event) => {
+    if (this.dragedThumb) {
       let { left: sliderBarLeft , right: sliderBarRight } = this.subElements.inner.getBoundingClientRect();
       let sliderBarWidth = sliderBarRight - sliderBarLeft;
 
-      let availableDragedSliderPosition = isLeftSliderDraged
-        ? {
-            min: 0,
-            max: parseFloat(this.subElements.thumbRight.style.left)
-          }
-        : {
-            min: parseFloat(this.subElements.thumbLeft.style.left),
-            max: 100
-          }
+      let newLeft = event.clientX - this.dragedThumbShiftX - sliderBarLeft;
 
-      let onMouseMove = (event) => {
-        const { clientX } = event;
+      let newDragedSliderPosition = sliderBarWidth 
+        ? newLeft/sliderBarWidth * 100
+        : this.dragedThumb === this.subElements.thumbLeft
+          ? 0
+          : 100;
 
-        let newLeft = clientX - shiftX - sliderBarLeft;
-
-        let newDragedSliderPosition = sliderBarWidth 
-          ? newLeft/sliderBarWidth * 100
-          : isLeftSliderDraged
-            ? 0
-            : 100;
-
-        if (newDragedSliderPosition < availableDragedSliderPosition.min) {
-          newDragedSliderPosition = availableDragedSliderPosition.min;
+      let availableDragedSliderPosition = (this.dragedThumb === this.subElements.thumbLeft)
+      ? {
+          min: 0,
+          max: parseFloat(this.subElements.thumbRight.style.left)
         }
-    
-        if (newDragedSliderPosition > availableDragedSliderPosition.max) {
-          newDragedSliderPosition = availableDragedSliderPosition.max;
+      : {
+          min: parseFloat(this.subElements.thumbLeft.style.left),
+          max: 100
         }
-    
-        dragedSlider.style.left = newDragedSliderPosition + '%';         
-
-        let newDragedSliderValue = Math.round(newDragedSliderPosition / 100 * (this.max - this.min)) + this.min;
-
-        let progressElement = this.subElements.progress;
-
-        if (isLeftSliderDraged) {
-          progressElement.style.left = newDragedSliderPosition + '%';
-          this.selected.from = newDragedSliderValue;
-        } else {
-          progressElement.style.right = 100 - newDragedSliderPosition + '%';
-          this.selected.to = newDragedSliderValue;
-        }
-
-        this.setLabelValues(this.selected);
-
-        this.dispatchRangeMoveEvent();
-      };
-      
-      let OnMouseup = (event) => {
-        document.removeEventListener('pointermove', onMouseMove);
-        document.removeEventListener('pointerup', OnMouseup);
-
-        this.dispatchRangeSelectEvent();
+        
+      if (newDragedSliderPosition < availableDragedSliderPosition.min) {
+        newDragedSliderPosition = availableDragedSliderPosition.min;
       }
 
-      document.addEventListener('pointermove', onMouseMove);
-      document.addEventListener('pointerup', OnMouseup);
+      if (newDragedSliderPosition > availableDragedSliderPosition.max) {
+        newDragedSliderPosition = availableDragedSliderPosition.max;
+      }
+
+      this.dragedThumb.style.left = newDragedSliderPosition + '%';         
+
+      let newDragedSliderValue = Math.round(newDragedSliderPosition / 100 * (this.max - this.min)) + this.min;
+
+      let progressElement = this.subElements.progress;
+
+      if (this.dragedThumb === this.subElements.thumbLeft) {
+        progressElement.style.left = newDragedSliderPosition + '%';
+        this.selected.from = newDragedSliderValue;
+      } else {
+        progressElement.style.right = 100 - newDragedSliderPosition + '%';
+        this.selected.to = newDragedSliderValue;
+      }
+
+      this.setLabelValues(this.selected);
+
+      this.dispatchRangeMoveEvent();
     }
-  }
+  };
 
   dispatchRangeMoveEvent () {
     this.element.dispatchEvent(new CustomEvent("range-move", {
