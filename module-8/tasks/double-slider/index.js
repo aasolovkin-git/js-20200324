@@ -95,8 +95,17 @@ export default class DoubleSlider {
           return (value - this.min)/(this.max - this.min)*100;
         }
 
-        let newDragedSliderPosition = (sliderBarWidth ? newLeft/sliderBarWidth*100 : 0);
-        let newDragedSliderValue = Math.round(newLeft / sliderBarWidth * (this.max - this.min)) + this.min;
+        let newDragedSliderPosition = sliderBarWidth 
+          ? newLeft/sliderBarWidth*100 
+          : isLeftSliderDraged
+            ? 0
+            : 100;
+
+        let newDragedSliderValue = sliderBarWidth
+          ? Math.round(newLeft / sliderBarWidth * (this.max - this.min)) + this.min
+          : isLeftSliderDraged
+            ? this.min
+            : this.max;
 
         dragedSlider.style.left = newDragedSliderPosition + '%';         
 
