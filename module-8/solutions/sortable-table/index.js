@@ -126,7 +126,11 @@ export default class SortableTable {
     this.data = [...this.data, ...data];
     rows.innerHTML = this.getTableRows(data);
 
+    // TODO: This is comparison of performance append vs insertAdjacentHTML
+    // console.time('timer');
+    // this.subElements.body.insertAdjacentHTML('beforeend', rows.innerHTML);
     this.subElements.body.append(...rows.childNodes);
+    // console.timeEnd('timer');
   }
 
   getTableHeader() {

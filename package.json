@@ -5,10 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test:all": "cross-env NODE_ICU_DATA=node_modules/full-icu jest",
+<<<<<<< HEAD
     "test:specific": "cross-env NODE_ICU_DATA=node_modules/full-icu jest --findRelatedTests",
     "test:karma": "karma start karma.conf.js",
     "serve": "static-server",
     "start": "static-server --port 8080 ./module-8" 
+=======
+    "test:specific": "cross-env NODE_ICU_DATA=node_modules/full-icu jest --findRelatedTests",    
+    "serve": "static-server",
+    "start": "static-server --port 8080 ./module-6"
+>>>>>>> dosandk-master
   },
   "repository": {
     "type": "git",

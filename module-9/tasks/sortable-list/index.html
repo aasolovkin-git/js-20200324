@@ -1,0 +1,26 @@
+<!doctype html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="./style.css">
+
+<body>
+
+<div id="holder" data-grab-handle></div>
+
+<script type="module">
+  import SortableList from './index.js';
+
+  const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+  const sortableList = new SortableList({
+    items: data.map(item => {
+      const element = document.createElement('span');
+
+      element.append(item);
+
+      return element;
+    })
+  });
+
+  holder.append(sortableList.element);
+</script>
+</body>
