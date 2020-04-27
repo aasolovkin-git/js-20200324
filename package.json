@@ -8,7 +8,7 @@
     "test:specific": "cross-env NODE_ICU_DATA=node_modules/full-icu jest --findRelatedTests",
     "test:karma": "karma start karma.conf.js",
     "serve": "static-server",
-    "start": "static-server --port 8080 ./module-8" 
+    "start": "static-server --port 8080 ./module-9" 
   },
   "repository": {
     "type": "git",
