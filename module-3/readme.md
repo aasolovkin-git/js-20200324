@@ -24,6 +24,9 @@
     9.5 [Расширение встроенных классов](https://learn.javascript.ru/extend-natives)  
     9.6 [Проверка класса: "instanceof"](https://learn.javascript.ru/instanceof)    
 
+4. [Объекты: основы](https://learn.javascript.ru/object-basics)
+    4.4 [Методы объекта, "this"](http://learn.javascript.ru/object-methods)
+
 6. [Продвинутая работа с функциями](https://learn.javascript.ru/advanced-functions)  
     6.9 [Декораторы и переадресация вызова, сall/apply](https://learn.javascript.ru/call-apply-decorators)  
     6.10 [Привязка контекста к функции](https://learn.javascript.ru/bind)  
