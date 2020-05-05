@@ -37,7 +37,6 @@ const spyDispatchEvent = jest.spyOn(component.element, 'dispatchEvent');
 const [spyDispatchEventMethod] = spyDispatchEvent.mock.calls;
 
 expect(spyDispatchEventMethod).toBeCalled();
-expect(setTimeout).toHaveBeenCalledTimes(1);
 ```
 
 

@@ -1,3 +1,4 @@
+import SortableList from '../sortable-list/index.js';
 import escapeHtml from "../../utils/escape-html.js";
 import fetchJson from "../../utils/fetch-json.js";
 
@@ -50,7 +51,7 @@ export default class ProductForm {
           body: formData,
         });
 
-        imageListContainer.append(this.getImageItem(result.data.link, file.name));
+        imageListContainer.firstElementChild.append(this.getImageItem(result.data.link, file.name));
 
         uploadImage.classList.remove('is-loading');
         uploadImage.disabled = false;
@@ -99,9 +100,7 @@ export default class ProductForm {
         <div class="form-group form-group__wide" data-element="sortable-list-container">
           <label class="form-label">Фото</label>
 
-          <ul class="sortable-list" data-element="imageListContainer">
-            ${this.createImagesList()}
-          </ul>
+          <div data-element="imageListContainer"></div>
 
           <button data-element="uploadImage" type="button" class="button-primary-outline">
             <span>Загрузить</span>
@@ -176,6 +175,7 @@ export default class ProductForm {
 
     this.renderForm();
     this.setFormData();
+    this.createImagesList();
     this.initEventListeners();
   }
 
@@ -200,7 +200,7 @@ export default class ProductForm {
   async save() {
     const product = this.getFormData();
     const result = await fetchJson(`${BACKEND_URL}/api/rest/products`, {
-      method:  'PATCH',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -273,7 +273,7 @@ export default class ProductForm {
 
     for (const category of this.categories) {
       for (const child of category.subcategories) {
-        select.append(new Option(category.title + " > " + child.title, child.id));
+        select.append(new Option(`${category.title} > ${child.title}`, child.id));
       }
     }
 
@@ -291,9 +291,15 @@ export default class ProductForm {
   }
 
   createImagesList () {
-    return this.formData.images.map(item => {
-      return this.getImageItem(item.url, item.source).outerHTML;
-    }).join('');
+    const { imageListContainer } = this.subElements;
+    const { images } = this.formData;
+    const items = images.map(({ url, source }) => this.getImageItem(url, source));
+
+    const sortableList = new SortableList({
+      items
+    });
+
+    imageListContainer.append(sortableList.element);
   }
 
   getImageItem (url, name) {
@@ -316,19 +322,10 @@ export default class ProductForm {
   }
 
   initEventListeners () {
-    const { productForm, uploadImage, imageListContainer } = this.subElements;
+    const { productForm, uploadImage } = this.subElements;
 
     productForm.addEventListener('submit', this.onSubmit);
     uploadImage.addEventListener('click', this.uploadImage);
-
-    /* TODO: will be removed in the next iteration of realization.
-       this logic will be implemented inside "SortableList" component
-    */
-    imageListContainer.addEventListener('click', event => {
-      if ('deleteHandle' in event.target.dataset) {
-        event.target.closest('li').remove();
-      }
-    })
   }
 
   destroy () {
